@@ -45,7 +45,7 @@ body {
   flex-direction: column;
 }
 .company-name {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   color: #083A67;
   letter-spacing: 0.5px;
@@ -190,8 +190,8 @@ body {
 <body>
 <div class="doc-header">
   <div class="header-left">
-    <div class="company-name">优普丰 AI 敏捷创新管理咨询机构</div>
-    <div class="company-tagline">Tel: +86-21-6380-9913</div>
+    <div class="company-name">{{company_name}}</div>
+    <div class="company-tagline">Tel: {{company_tel}}</div>
   </div>
   <div class="header-right">
     {% if branding.logo_path %}
@@ -200,7 +200,7 @@ body {
   </div>
 </div>
 
-<div class="doc-title">报价单</div>
+<div class="doc-title">{{title}}</div>
 
 <div class="meta-section">
 <table class="meta-table">
@@ -210,10 +210,6 @@ body {
 </table>
 </div>
 
-<div class="customer-section">
-<div class="section-title">客户信息 Client</div>
-<div class="customer-name">{{ customer.customer_name }}</div>
-</div>
 
 <div class="pricing-section">
 <div class="section-title">报价明细 Pricing Details</div>
@@ -239,7 +235,7 @@ body {
 {% endfor %}
 <tr class="total-row">
 <td colspan="4">共计 / Total:</td>
-<td>{{ "%.2f"|format(pricing_summary.total_amount) }}</td>
+<td>{{ quotation.currency }} {{ "%.2f"|format(pricing_summary.total_amount) }}</td>
 </tr>
 </tbody>
 </table>
@@ -271,8 +267,8 @@ body {
     <div>Tel: {{ company.company_phone or "+86-21-6380-9913" }}</div>
   </div>
   <div class="footer-right">
-    <div class="footer-accent">{{ quotation.currency }} {{ "%.2f"|format(pricing_summary.total_amount) }}</div>
-    <div>Valid Through / 有效期至: {{ validity.valid_until or "90 days" }}</div>
+    <div class="footer-accent">Valid Through / 有效期至: {{ validity.valid_until or "90 days" }}</div>
+    <div></div>
   </div>
 </div>
 

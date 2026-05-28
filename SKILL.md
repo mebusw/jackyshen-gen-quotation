@@ -6,6 +6,7 @@ description: Generate professional PDF quotations, training proposals, and busin
 # Quotation & Business Document Generator
 
 Generate brand-consistent, professionally styled PDF quotations and training proposals from natural language, Markdown, or structured data.
+Always use existing python scripts in `scripts/render_quotation.py`, don't rewrite nodejs or javascripts scripts.
 
 ## Core Flow
 
@@ -52,7 +53,7 @@ Collect these fields in order. Ask the user for any missing required fields.
 
 ### 必须字段
 
-固定信息存放在  `.env` 文件里，应作为默认值
+固定信息存放在  `config/config.yaml` 文件里，应作为默认值
 
 ```markdown
 ## 必需信息
@@ -60,13 +61,12 @@ Collect these fields in order. Ask the user for any missing required fields.
 1. **贵司信息**
    - 公司名称 company_name
    - 地址 company_address (可选)
-   - 电话 company_phone (可选)
+   - 电话 company_tel (可选)
    - 邮箱 company_email (可选)
 
 2. **客户信息**
    - 客户名称 customer_name
    - 联系人 contact_person (可选)
-   - 客户公司 customer_company
 
 3. **文档信息**
    - 报价单号 quotation_no (格式: QL-YYYYMMDD-序号)
@@ -82,11 +82,11 @@ Collect these fields in order. Ask the user for any missing required fields.
 
 5. **汇总信息**
    - 小计 subtotal
-   - 税率 tax_rate (如: 0.06)
+   - 税率 tax_rate (如: 6%)
    - 税费 tax_amount
    - 总计 total_amount
    - 币种 currency (默认 CNY)
-   - 含税否 tax_included
+   - 含税否 tax_included (可选)
 
 6. **付款条款**
    - 付款方式 payment_method (可选)
