@@ -96,8 +96,7 @@ Logo 位置：**页面右上角**。
    - 银行信息 bank_info (可选)
 
 7. **有效期**
-   - 有效至 valid_until (可选)
-   - 有效期天数 validity_days (可选)
+   - 有效至 valid_until (默认为当前日期之后的第90天)
 
 8. **签章信息**
    - 账户名称 account_name
