@@ -165,6 +165,7 @@ CourseModule:
 使用 **Jinja2 模板**方式。禁止 LLM 直接生成 HTML。
 
 **模板路径：** `templates/modern/quotation.html`
+**渲染后的模版路径：** `output/quotation_output.html`
 
 模板使用 UPerform 品牌主题：
 - 页眉：深海蓝 (`#083A67`) + 白色背景
