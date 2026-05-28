@@ -46,7 +46,7 @@ def render_to_pdf(html_path, pdf_path):
         page.pdf(
             path=pdf_path,
             format="A4",
-            margin={"top": "0", "right": "0", "bottom": "0", "left": "0"},
+            margin={"top": "12mm", "right": "20%", "bottom": "12mm", "left": "20%"},
             print_background=True
         )
         browser.close()
