@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ quotation.title }}</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 @page {
   size: A4;
@@ -12,13 +11,18 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: "Source Sans Pro", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: "SimSun", "宋体", "Source Sans Pro", "Noto Sans SC", "PingFang SC", sans-serif;
   font-size: 13px;
-  color: #283030;
+  color: #1a1a1a;
   background: #fff;
   width: 210mm;
   min-height: 297mm;
   margin: 0 auto;
+}
+
+/* Content wrapper with 20% margin on each side */
+.content-wrapper {
+  margin: 0 10%;
 }
 
 /* White header */
@@ -29,16 +33,6 @@ body {
   padding: 16px 24px;
   background: #fff;
   border-bottom: 2px solid #083A67;
-  position: relative;
-}
-.doc-header::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 60px;
-  height: 2px;
-  background: #FF9B7D;
 }
 .header-left {
   display: flex;
@@ -69,14 +63,14 @@ body {
   font-weight: 700;
   color: #083A67;
   text-align: center;
-  margin: 20px 24px 16px;
+  margin: 20px 10% 16px;
   padding-bottom: 12px;
-  border-bottom: 3px solid #FF9B7D;
+  border-bottom: 3px solid #083A67;
 }
 
 /* Meta table */
 .meta-section {
-  padding: 0 24px 16px;
+  padding: 0 0 16px;
 }
 .meta-table { width: 100%; border-collapse: collapse; }
 .meta-table td { padding: 5px 0; }
@@ -86,14 +80,15 @@ body {
   width: 120px;
   font-size: 12px;
 }
-.meta-table .value { color: #283030; font-size: 13px; }
+.meta-table .value { color: #1a1a1a; font-size: 13px; }
 
-/* Customer section */
+/* Customer section - white background, navy border */
 .customer-section {
-  margin: 0 24px 16px;
+  margin: 0 0 16px;
   padding: 12px 16px;
-  background: #F1E2C5;
-  border-left: 4px solid #FF9B7D;
+  background: #fff;
+  border: 1px solid #083A67;
+  border-left: 4px solid #083A67;
   border-radius: 0 6px 6px 0;
 }
 .section-title {
@@ -107,12 +102,12 @@ body {
 .customer-name {
   font-size: 15px;
   font-weight: 700;
-  color: #083A67;
+  color: #1a1a1a;
 }
 
 /* Pricing Table */
 .pricing-section {
-  padding: 0 24px;
+  padding: 0 0;
 }
 .pricing-table { width: 100%; border-collapse: collapse; }
 .pricing-table th {
@@ -143,30 +138,32 @@ body {
 }
 .total-row td:last-child { text-align: right; }
 
-/* Notes */
+/* Notes - white background, black text, navy accent */
 .notes-section {
-  margin: 16px 24px 12px;
+  margin: 16px 0 12px;
   padding: 12px 16px;
-  background: #FFF0D1;
-  border-left: 4px solid #FF9B7D;
+  background: #fff;
+  border: 1px solid #4F82BA;
+  border-left: 4px solid #083A67;
   border-radius: 0 6px 6px 0;
 }
 .note-item {
   padding: 3px 0;
-  color: #535353;
+  color: #1a1a1a;
   font-size: 11px;
   line-height: 1.4;
 }
 
-/* Bank */
+/* Bank - white background, black text, navy accent */
 .bank-section {
-  margin: 12px 24px;
+  margin: 12px 0;
   padding: 12px 16px;
-  background: #EBF4FF;
-  border-left: 4px solid #4F82BA;
+  background: #fff;
+  border: 1px solid #4F82BA;
+  border-left: 4px solid #083A67;
   border-radius: 0 6px 6px 0;
 }
-.bank-info { font-size: 12px; color: #283030; }
+.bank-info { font-size: 12px; color: #1a1a1a; }
 .bank-info div { padding: 2px 0; }
 .bank-info strong { color: #083A67; }
 
@@ -175,7 +172,7 @@ body {
   margin-top: 16px;
   padding: 12px 24px;
   background: #083A67;
-  color: #D9CCB2;
+  color: #ffffff;
   font-size: 11px;
   display: flex;
   justify-content: space-between;
@@ -183,8 +180,8 @@ body {
 }
 .footer-left { display: flex; flex-direction: column; gap: 2px; }
 .footer-right { text-align: right; }
-.footer-accent { color: #FF9B7D; font-size: 14px; font-weight: 700; }
-.footer-divider { height: 3px; background: linear-gradient(90deg, #FF9B7D, #E78C72); margin: 0; }
+.footer-accent { color: #4F82BA; font-size: 14px; font-weight: 700; }
+.footer-divider { height: 3px; background: #083A67; margin: 0; }
 </style>
 </head>
 <body>
@@ -202,6 +199,7 @@ body {
 
 <div class="doc-title">{{title}}</div>
 
+<div class="content-wrapper">
 <div class="meta-section">
 <table class="meta-table">
 <tr><td class="label">致客户 / Submitted To:</td><td class="value"><strong>{{ customer.customer_name }}</strong></td></tr>
@@ -257,6 +255,7 @@ body {
     <div><strong>账号 / Account:</strong> {{ signature.account_number }}</div>
     <div><strong>账户名称 / Name:</strong> {{ signature.account_name }}</div>
   </div>
+</div>
 </div>
 
 <div class="footer-divider"></div>

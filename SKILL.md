@@ -1,64 +1,64 @@
 ---
 name: jackyshen-gen-quotation
-description: Generate professional PDF quotations, training proposals, and business documents for Chinese enterprises. Trigger when the user mentions 报价单(quotation)、报价(bid/pricing)、提案(proposal)、培训方案(training plan)、商业文档(business document)、生成PDF(generate PDF)，or when they provide details about training services, consulting fees, or pricing. Works with both Chinese and English content.
+description: 生成专业PDF报价单、培训提案和商业文档。当用户提及报价单、报价、提案、培训方案、商业文档、生成PDF，或提供培训服务、咨询费用、定价详情时触发。支持中英文内容。
 ---
 
-# Quotation & Business Document Generator
+# 报价单 & 商业文档生成器
 
-Generate brand-consistent, professionally styled PDF quotations and training proposals from natural language, Markdown, or structured data.
-Always use existing python scripts in `scripts/render_quotation.py`, don't rewrite nodejs or javascripts scripts.
+从自然语言、Markdown 或结构化数据生成品牌一致、风格专业的 PDF 报价单和培训提案。
+始终使用 `scripts/render_quotation.py` 中的 Python 脚本，不要重写 Node.js 或 JavaScript 脚本。
 
-## Core Flow
+## 核心流程
 
 ```
-User Input (自然语言 / Markdown / 结构化数据)
+用户输入（自然语言 / Markdown / 结构化数据）
                 ↓
-    LLM Structured Extraction
+    LLM 结构化提取
                 ↓
   QuoteDocument Schema (Pydantic)
                 ↓
-     Jinja2 Template Render
+     Jinja2 模板渲染
                 ↓
-        HTML Output
+        HTML 输出
                 ↓
       Playwright PDF
                 ↓
-        PDF Output
+        PDF 输出
 ```
 
-## Brand Theme: UPerform
+## 品牌主题：UPerform
 
-**Primary:** `#083A67` (深海蓝 Navy)
-**Secondary:** `#4F82BA` (钢蓝 Steel Blue)
-**Accent:** `#FF9B7D` (珊瑚橙 Coral)
-**Background:** `#FFFFFF` / `#FFF0D1` (暖米色)
+**主色：** `#083A67`（深海蓝 Navy）
+**辅色：** `#4F82BA`（钢蓝 Steel Blue）
+**点缀色：** `#FFFFFF`（白色 White）
+**背景色：** `#FFFFFF`（白色）
 
-Logo position: **top-right corner** of the header.
+Logo 位置：**页面右上角**。
 
-## Step 1 — Identify Document Type
+## 步骤一 — 识别文档类型
 
-根据原始输入自动判断生成的类型，如果不确定，Ask the user: **"请确认文档类型"**
+根据原始输入自动判断生成的类型，如果不确定，询问用户：**"请确认文档类型"**
 
-| 类型 | 说明 | key fields |
-|------|------|------------|
+| 类型 | 说明 | 关键字段 |
+|------|------|----------|
 | `quotation` | 报价单/报价方案 | pricing_items, total, payment_terms |
 | `proposal` | 培训方案/课程大纲 | outline, modules, objectives |
-| `mixed` | 报价单 + 课程大纲 | both above |
+| `mixed` | 报价单 + 课程大纲 | 两者兼有 |
 
-If unclear, default to `mixed`.
+不明确时，默认为 `mixed`。
 
-## Step 2 — Gather Information
+## 步骤二 — 收集信息
 
-Collect these fields in order. Ask the user for any missing required fields.
+按顺序收集以下字段，如有缺失请询问用户。
 
 ### 必须字段
 
-固定信息存放在  `config/config.yaml` 文件里，应作为默认值
+固定信息存放在 `config/config.yaml` 文件里，应作为默认值。
 
 ```markdown
 ## 必需信息
 
-1. **贵司信息**
+1. **我司信息**
    - 公司名称 company_name
    - 地址 company_address (可选)
    - 电话 company_tel (可选)
@@ -109,9 +109,9 @@ Collect these fields in order. Ask the user for any missing required fields.
 - 备注 notes[]
 - 品牌配置 branding{logo_path, primary_color, secondary_color, accent_color}
 
-## Step 3 — Structure with QuoteDocument Schema
+## 步骤三 — 按 QuoteDocument Schema 组织数据
 
-Always produce a structured JSON matching this schema:
+输出必须匹配以下 Schema 的结构化 JSON：
 
 ```python
 QuoteDocument:
@@ -143,7 +143,7 @@ PricingItem:
   remarks: str | None # 备注(可选)
 ```
 
-### CourseOutline (optional)
+### CourseOutline (可选)
 
 ```python
 CourseOutline:
@@ -159,31 +159,34 @@ CourseModule:
   exercises: list[str] = []
 ```
 
-## Step 4 — Render to HTML → PDF
+## 步骤四 — Jinja2 渲染为 HTML → PDF
 
-Use the **Jinja2 template** approach. Do NOT let the LLM generate HTML directly.
+使用 **Jinja2 模板**方式。禁止 LLM 直接生成 HTML。
 
-**Template path:** `templates/modern/quotation.html`
+**模板路径：** `templates/modern/quotation.html`
 
-The template uses UPerform brand theme:
-- Header: deep navy gradient (`#041C32` → `#083A67` → `#0A477E`)
-- Accent line: coral orange (`#FF9B7D`)
-- Logo: top-right corner
-- Customer section: warm beige background (`#F1E2C5`)
-- Notes section: pale beige (`#FFF0D1`)
-- Bank section: sky blue (`#EBF4FF`)
+模板使用 UPerform 品牌主题：
+- 页眉：深海蓝 (`#083A67`) + 白色背景
+- 强调线：深海蓝 (`#083A67`)
+- Logo：右上角
+- 客户区域：白色背景 + 深海蓝边框
+- 备注区域：白色背景 + 深海蓝边框
+- 银行账户区域：白色背景 + 深海蓝边框
+- 所有文字：黑色 (`#1a1a1a`) + 白色背景
+- 字体：宋体 (SimSun) 用于中文
+- 内容区域：左右各 20% 边距
 
-**Key rule:** The LLM outputs JSON → JSON goes into Jinja2 → Jinja2 produces HTML → Playwright renders PDF. LLM never writes final HTML.
+**核心规则：** LLM 输出 JSON → JSON 传入 Jinja2 → Jinja2 生成 HTML → Playwright 渲染 PDF。LLM 绝不直接写 HTML。
 
-## Step 5 — Output Format
+## 步骤五 — 输出格式
 
-**Default output: PDF file** via Playwright `page.pdf()`
+**默认输出：PDF 文件**，通过 Playwright `page.pdf()` 生成。
 
-For HTML preview only, use `html` output.
+仅预览 HTML 时，使用 `html` 输出。
 
-## Quick Start Template
+## 快速开始模板
 
-When user says "生成报价单" or similar, reply with:
+当用户说"生成报价单"或类似内容时，回复：
 
 ```markdown
 好的，我来帮您生成专业报价单。
@@ -197,7 +200,7 @@ When user says "生成报价单" or similar, reply with:
 5. **付款信息** — 银行账户信息（可选）
 ```
 
-## Category Reference
+## 分类参考
 
 | category | 中文 | 示例 |
 |----------|------|------|
@@ -208,10 +211,10 @@ When user says "生成报价单" or similar, reply with:
 | material | 材料 | 教材、设计物料 |
 | other | 其他 | 其他费用 |
 
-## Sample Structure (from parsed document)
+## 示例结构
 
 ```
-公司: Shanghai UPerform Limited
+公司: 上海优普丰企业管理有限公司
 客户: 皇家 ROYAL CANIN
 日期: 2026/5/28
 
@@ -234,18 +237,18 @@ When user says "生成报价单" or similar, reply with:
 - 账户名称: 上海优普丰企业管理有限公司
 ```
 
-## Important Principles
+## 重要原则
 
-1. **AI outputs JSON, not HTML** — Templates control all styling
-2. **Schema is the source of truth** — All inputs must map to QuoteDocument
-3. **Brand consistency** — Logo top-right, navy header, coral accents
-4. **Chinese + English** — Support both languages in a single document
-5. **PDF is final output** — Use Playwright to convert HTML to PDF
-6. **No direct CSS injection** — All styles come from template
+1. **L LLM 输出 JSON，不输出 HTML** — 样式全部由模板控制
+2. **Schema 是数据源** — 所有输入必须映射到 QuoteDocument
+3. **品牌一致性** — Logo 右上角、深蓝页眉、蓝色点缀
+4. **中英双语** — 单文档支持中文和英文
+5. **PDF 是最终输出** — 使用 Playwright 将 HTML 转为 PDF
+6. **禁止直接注入 CSS** — 所有样式来自模板
 
-## Error Handling
+## 错误处理
 
-- Missing required field → Ask user explicitly for that field
-- Unclear category → Ask user to confirm category
-- Missing template → Fall back to basic HTML structure
-- Parsing failure → Show user the raw text and ask to correct
+- 缺少必填字段 → 明确询问用户
+- 分类不明确 → 请用户确认分类
+- 模板缺失 → 回退到基础 HTML 结构
+- 解析失败 → 展示原始文本并请用户修正
