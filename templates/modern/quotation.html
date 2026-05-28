@@ -32,20 +32,19 @@ body {
   align-items: center;
   padding: 16px 24px;
   background: #fff;
-  border-bottom: 2px solid #083A67;
 }
 .header-left {
   display: flex;
   flex-direction: column;
 }
 .company-name {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   color: #083A67;
   letter-spacing: 0.5px;
 }
 .company-tagline {
-  font-size: 12px;
+  font-size: 10px;
   color: #535353;
   margin-top: 2px;
 }
@@ -59,7 +58,7 @@ body {
 
 /* Title */
 .doc-title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   color: #083A67;
   text-align: center;
@@ -77,8 +76,8 @@ body {
 .meta-table .label {
   font-weight: 600;
   color: #083A67;
-  width: 120px;
-  font-size: 12px;
+  width: 160px;
+  font-size: 10px;
 }
 .meta-table .value { color: #1a1a1a; font-size: 13px; }
 
@@ -92,7 +91,7 @@ body {
   border-radius: 0 6px 6px 0;
 }
 .section-title {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: #083A67;
   margin-bottom: 6px;
@@ -100,7 +99,7 @@ body {
   letter-spacing: 0.5px;
 }
 .customer-name {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 700;
   color: #1a1a1a;
 }
@@ -150,7 +149,7 @@ body {
 .note-item {
   padding: 3px 0;
   color: #1a1a1a;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.4;
 }
 
@@ -163,7 +162,7 @@ body {
   border-left: 4px solid #083A67;
   border-radius: 0 6px 6px 0;
 }
-.bank-info { font-size: 12px; color: #1a1a1a; }
+.bank-info { font-size: 10px; color: #1a1a1a; }
 .bank-info div { padding: 2px 0; }
 .bank-info strong { color: #083A67; }
 
@@ -187,8 +186,8 @@ body {
 <body>
 <div class="doc-header">
   <div class="header-left">
-    <div class="company-name">{{company_name}}</div>
-    <div class="company-tagline">Tel: {{company_tel}}</div>
+    <div class="company-name">{{company.company_name}}</div>
+    <div class="company-tagline">Tel: {{company.company_tel}}</div>
   </div>
   <div class="header-right">
     {% if branding.logo_path %}
@@ -263,7 +262,7 @@ body {
 <div class="doc-footer">
   <div class="footer-left">
     <div>{{ company.company_name }}</div>
-    <div>Tel: {{ company.company_phone or "+86-21-6380-9913" }}</div>
+    <div>Tel: {{ company.company_tel }}</div>
   </div>
   <div class="footer-right">
     <div class="footer-accent">Valid Through / 有效期至: {{ validity.valid_until or "90 days" }}</div>
