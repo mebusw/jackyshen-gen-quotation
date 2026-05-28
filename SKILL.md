@@ -41,11 +41,11 @@ Logo 位置：**页面右上角**。
 
 根据原始输入自动判断生成的类型，如果不确定，询问用户：**"请确认文档类型"**
 
-| 类型 | 说明 | 关键字段 |
+| 类型 | "doc_title"值 | 关键字段 |
 |------|------|----------|
-| `quotation` | 报价单/报价方案 | pricing_items, total, payment_terms |
-| `proposal` | 培训方案/课程大纲 | outline, modules, objectives |
-| `mixed` | 报价单 + 课程大纲 | 两者兼有 |
+| `quotation` | "报价单 / Quotation" | customer_company, pricing_items, total, payment_terms |
+| `outline` | "培训大纲 / Outline" | outline, modules, objectives |
+| `mixed` | "培训方案及报价 / Proposal" | 两者兼有 |
 
 不明确时，默认为 `mixed`。
 
@@ -53,12 +53,11 @@ Logo 位置：**页面右上角**。
 
 按顺序收集以下字段，如有缺失请询问用户。
 
-### 必须字段
+固定信息存放在 `config/config.yaml` 文件里，应读取作为必须字段的默认值。
 
-固定信息存放在 `config/config.yaml` 文件里，应读取作为默认值。
+### `quotation`类型的必需信息
 
 ```markdown
-## 必需信息
 
 1. **我司信息**
    - 公司名称 company_name
@@ -73,7 +72,8 @@ Logo 位置：**页面右上角**。
 3. **文档信息**
    - 报价单号 quotation_no (格式: QL-YYYYMMDD-序号)
    - 报价日期 quotation_date (YYYY/M/D)
-   - 文档标题 title
+   - 文档标题 doc_title
+   - doc_type: "quotation"（必须显式声明）
 
 4. **报价项目** (至少1项)
    - 服务名称 service_name
@@ -104,9 +104,31 @@ Logo 位置：**页面右上角**。
    - 银行账号 account_number
 ```
 
+### `outline`类型的必需信息
+```markdown
+1. **我司信息**
+   - 公司名称 company_name
+   - 地址 company_address (可选)
+   - 电话 company_tel (可选)
+   - 邮箱 company_email (可选)
+
+2. **客户信息**
+   - 客户名称 customer_name
+
+3. **文档信息**
+   - 文档标题 doc_title
+
+4. **课程大纲** (CourseOutline)
+   — title
+   - modules[]
+   - learning_objectives[]
+   - target_audience[]
+
+5. **文档类型**
+   - doc_type: "outline"（必须显式声明）
+```
 ### 可选字段
 
-- 课程大纲 (CourseOutline) — title, modules[], learning_objectives[], target_audience[]
 - 备注 notes[]
 - 品牌配置 branding{logo_path, primary_color, secondary_color, accent_color}
 
@@ -119,14 +141,15 @@ QuoteDocument:
   company: CompanyInfo         # 供方信息
   customer: CustomerInfo       # 需方信息
   quotation: QuotationInfo     # 文档基本信息
-  pricing_items: list[PricingItem]  # 报价明细
+  doc_type: str               # "quotation" | "outline" | "mixed" — 控制模板条件渲染
+  pricing_items: list[PricingItem]  # 报价明细（doc_type != "outline" 时显示）
   pricing_summary: PricingSummary  # 汇总
   payment_terms: PaymentTerms  # 付款条款
   tax: TaxInfo                # 税费
   validity: ValidityInfo      # 有效期
-  outline: CourseOutline | None  # 课程大纲(可选)
+  outline: CourseOutline | None  # 课程大纲（doc_type != "quotation" 时显示）
   notes: list[str] = []      # 备注
-  signature: SignatureInfo   # 签章信息
+  signature: SignatureInfo   # 签章信息（doc_type != "outline" 时显示）
   branding: BrandingConfig   # 品牌配置
 ```
 
@@ -213,12 +236,25 @@ CourseModule:
 | material | 材料 | 教材、设计物料 |
 | other | 其他 | 其他费用 |
 
+## 文档类型条件渲染
+
+模板根据 `doc_type` 字段决定显示哪些区块：
+
+| 字段 | quotation | outline | mixed |
+|------|-----------|---------|-------|
+| 报价明细 pricing_items | ✅ | ❌ | ✅ |
+| 银行账户 signature | ✅ | ❌ | ✅ |
+| 课程大纲 outline | ❌ | ✅ | ✅ |
+| 备注 notes | ✅ | ✅ | ✅ |
+
 ## 示例结构
 
+**quotation 类型：**
 ```
 公司: 上海优普丰企业管理有限公司
 客户: 皇家 ROYAL CANIN
 日期: 2026/5/28
+doc_type: "quotation"
 
 报价项目:
 | 项目 | 时长 | 人数 | 单价 | 小计 |
@@ -239,14 +275,38 @@ CourseModule:
 - 账户名称: 上海优普丰企业管理有限公司
 ```
 
+**outline 类型：**
+```
+公司: 上海优普丰企业管理有限公司
+客户: 皇家 ROYAL CANIN
+日期: 2026/5/28
+doc_type: "outline"
+
+课程目标:
+1. 破冰融合——通过互动活动，促进EOS项目组跨职能成员相互认识、建立信任
+2. 激活知识——基于EOS项目真实场景，演练敏捷项目管理工具
+3. 建立共识——运用ADKAR变革管理模型，识别项目当前所处阶段
+
+课程大纲:
+模块一：第一天：敏捷项目管理实战演练（9:00-17:00）
+- 开场与破冰
+- 项目挑战共识
+- 敏捷项目管理框架回顾
+...
+
+模块二：第二天：变革管理与项目推进共识（9:00-16:00）
+...
+```
+
 ## 重要原则
 
-1. **L LLM 输出 JSON，不输出 HTML** — 样式全部由模板控制
+1. **LLM 输出 JSON，不输出 HTML** — 样式全部由模板控制
 2. **Schema 是数据源** — 所有输入必须映射到 QuoteDocument
-3. **品牌一致性** — Logo 右上角、深蓝页眉、蓝色点缀
-4. **中英双语** — 单文档支持中文和英文
-5. **PDF 是最终输出** — 使用 Playwright 将 HTML 转为 PDF
-6. **禁止直接注入 CSS** — 所有样式来自模板
+3. **doc_type 控制条件渲染** — 必须显式声明 `"quotation"` | `"outline"` | `"mixed"`，模板据此显示/隐藏对应区块
+4. **品牌一致性** — Logo 右上角、深蓝页眉、蓝色点缀
+5. **中英双语** — 单文档支持中文和英文
+6. **PDF 是最终输出** — 使用 Playwright 将 HTML 转为 PDF
+7. **禁止直接注入 CSS** — 所有样式来自模板
 
 ## 错误处理
 

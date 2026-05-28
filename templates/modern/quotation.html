@@ -1,301 +1,530 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ quotation.title }}</title>
-<style>
-@page {
-  size: A4;
-  margin: 15mm 0;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: "SimSun", "宋体", "STSong", "Source Sans Pro", "Noto Sans SC", sans-serif;
-  font-size: 12px;
-  color: #1a1a1a;
-  background: #fff;
-  width: 200mm;
-  height: 260mm;
-  overflow: hidden;
-  margin: 0 auto;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ quotation.title }}</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 15mm 0;
+    }
 
-/* Content wrapper with 20% margin on each side - applies to ALL content */
-.content-wrapper {
-  margin: 0 20%;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* Header section */
-.doc-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  background: #fff;
-}
-.header-left {
-  display: flex;
-  flex-direction: column;
-}
-.company-name {
-  font-size: 10px;
-  font-weight: 700;
-  color: #083A67;
-  letter-spacing: 0.5px;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
-.company-tagline {
-  font-size: 9px;
-  color: #535353;
-  margin-top: 2px;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
-.header-right {
-  text-align: right;
-}
-.logo-img {
-  width: 70px;
-  height: auto;
-}
+    body {
+      font-family: "SimSun", "宋体", "STSong", "Source Sans Pro", "Noto Sans SC", sans-serif;
+      font-size: 12px;
+      color: #1a1a1a;
+      background: #fff;
+      width: 200mm;
+      height: 260mm;
+      overflow: hidden;
+      margin: 0 auto;
+    }
 
-/* Title */
-.doc-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #083A67;
-  text-align: center;
-  margin: 16px 0 12px;
-  padding-bottom: 10px;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
+    /* Content wrapper with 20% margin on each side - applies to ALL content */
+    .content-wrapper {
+      margin: 0 20%;
+    }
 
-/* Meta table */
-.meta-section {
-  padding: 0 0 12px;
-}
-.meta-table { width: 100%; border-collapse: collapse; }
-.meta-table td { padding: 4px 0; }
-.meta-table .label {
-  font-weight: 600;
-  color: #083A67;
-  width: 140px;
-  font-size: 11px;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
-.meta-table .value {
-  color: #1a1a1a;
-  font-size: 11px;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
+    /* Header section */
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      background: #fff;
+    }
 
-/* Customer section */
-.customer-section {
-  margin: 0 0 12px;
-  padding: 10px 14px;
-  background: #fff;
-  border: 1px solid #083A67;
-  border-left: 3px solid #083A67;
-  border-radius: 0 4px 4px 0;
-}
-.section-title {
-  font-size: 11px;
-  font-weight: 700;
-  color: #083A67;
-  margin-bottom: 5px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
-.customer-name {
-  font-size: 12px;
-  font-weight: 700;
-  color: #1a1a1a;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
+    .header-left {
+      display: flex;
+      flex-direction: column;
+    }
 
-/* Pricing Table */
-.pricing-section {
-  padding: 0 0;
-}
-.pricing-table { width: 100%; border-collapse: collapse; }
-.pricing-table th {
-  background: #083A67;
-  color: #fff;
-  padding: 8px 6px;
-  text-align: left;
-  font-weight: 600;
-  font-size: 9px;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
-.pricing-table th:last-child { text-align: right; }
-.pricing-table td {
-  padding: 8px 6px;
-  border-bottom: 1px solid #D2D2D2;
-  font-size: 9px;
-  vertical-align: top;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
-.pricing-table td:last-child { text-align: right; }
-.pricing-table tbody tr:nth-child(even) td { background: #F9F9F9; }
-.total-row td {
-  background: #fff !important;
-  color: #083A67 !important;
-  font-weight: 700;
-  font-size: 9px;
-  border-top: 2px solid #083A67;
-  border-bottom: none;
-  padding: 10px 6px;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
-.total-row td:last-child { text-align: right; }
+    .company-name {
+      font-size: 10px;
+      font-weight: 700;
+      color: #083A67;
+      letter-spacing: 0.5px;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
 
-/* Notes section */
-.notes-section {
-  margin: 12px 0 10px;
-  padding: 10px 14px;
-  background: #fff;
-  /* border: 1px solid #4F82BA;
+    .company-tagline {
+      font-size: 9px;
+      color: #535353;
+      margin-top: 2px;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .header-right {
+      text-align: right;
+    }
+
+    .logo-img {
+      width: 70px;
+      height: auto;
+    }
+
+    /* Title */
+    .doc-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #083A67;
+      text-align: center;
+      margin: 16px 0 12px;
+      padding-bottom: 10px;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    /* Meta table */
+    .meta-section {
+      padding: 0 0 12px;
+    }
+
+    .meta-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .meta-table td {
+      padding: 4px 0;
+    }
+
+    .meta-table .label {
+      font-weight: 600;
+      color: #083A67;
+      width: 140px;
+      font-size: 11px;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .meta-table .value {
+      color: #1a1a1a;
+      font-size: 11px;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    /* Customer section */
+    .customer-section {
+      margin: 0 0 12px;
+      padding: 10px 14px;
+      background: #fff;
+      border: 1px solid #083A67;
+      border-left: 3px solid #083A67;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #083A67;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .customer-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1a1a1a;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    /* Pricing Table */
+    .pricing-section {
+      padding: 0 0;
+    }
+
+    .pricing-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .pricing-table th {
+      background: #083A67;
+      color: #fff;
+      padding: 8px 6px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 9px;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .pricing-table th:last-child {
+      text-align: right;
+    }
+
+    .pricing-table td {
+      padding: 8px 6px;
+      border-bottom: 1px solid #D2D2D2;
+      font-size: 9px;
+      vertical-align: top;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .pricing-table td:last-child {
+      text-align: right;
+    }
+
+    .pricing-table tbody tr:nth-child(even) td {
+      background: #F9F9F9;
+    }
+
+    .total-row td {
+      background: #fff !important;
+      color: #083A67 !important;
+      font-weight: 700;
+      font-size: 9px;
+      border-top: 2px solid #083A67;
+      border-bottom: none;
+      padding: 10px 6px;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .total-row td:last-child {
+      text-align: right;
+    }
+
+    /* Notes section */
+    .notes-section {
+      margin: 12px 0 10px;
+      padding: 10px 14px;
+      background: #fff;
+      /* border: 1px solid #4F82BA;
   border-left: 3px solid #083A67;
   border-radius: 0 4px 4px 0; */
-}
-.note-item {
-  padding: 2px 0;
-  color: #1a1a1a;
-  font-size: 9px;
-  line-height: 1.4;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
+    }
 
-/* Bank section */
-.bank-section {
-  margin: 10px 0;
-  padding: 10px 14px;
-  background: #fff;
-  /* border: 1px solid #4F82BA;
+    .note-item {
+      padding: 2px 0;
+      color: #1a1a1a;
+      font-size: 9px;
+      line-height: 1.4;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    /* Bank section */
+    .bank-section {
+      margin: 10px 0;
+      padding: 10px 14px;
+      background: #fff;
+      /* border: 1px solid #4F82BA;
   border-left: 3px solid #083A67;
   border-radius: 0 4px 4px 0; */
-}
-.bank-info {
-  font-size: 9px;
-  color: #1a1a1a;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
-.bank-info div { padding: 2px 0; }
-.bank-info strong {
-  color: #083A67;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
+    }
 
-/* Footer - fixed at page bottom, no page break */
-.doc-footer {
-  margin-top: 12px;
-  padding: 10px 0;
-  background: #083A67;
-  color: #ffffff;
-  font-size: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-.footer-left {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
-.footer-right {
-  padding: 10px;
-  text-align: right;
-  font-family: "SimSun", "宋体", "STSong", sans-serif;
-}
-.footer-accent { font-weight: 700; }
-</style>
+    .bank-info {
+      font-size: 9px;
+      color: #1a1a1a;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .bank-info div {
+      padding: 2px 0;
+    }
+
+    .bank-info strong {
+      color: #083A67;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    /* Footer - fixed at page bottom, no page break */
+    .doc-footer {
+      margin-top: 12px;
+      padding: 10px 0;
+      background: #083A67;
+      color: #ffffff;
+      font-size: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .footer-left {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .footer-right {
+      padding: 10px;
+      text-align: right;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .footer-accent {
+      font-weight: 700;
+    }
+
+    /* Outline Section */
+    .outline-section {
+      margin: 12px 0;
+    }
+
+    .outline-main-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #083A67;
+      text-align: center;
+      margin: 10px 0;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .objectives-section {
+      margin: 10px 0;
+      padding: 8px 12px;
+      background: #F5F8FA;
+      border-left: 3px solid #083A67;
+    }
+
+    .subsection-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: #083A67;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .objective-item {
+      font-size: 9px;
+      color: #1a1a1a;
+      padding: 3px 0;
+      line-height: 1.4;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .audience-section {
+      margin: 8px 0;
+      padding: 6px 12px;
+      background: #F5F8FA;
+      border-left: 3px solid #083A67;
+    }
+
+    .audience-item {
+      font-size: 9px;
+      color: #1a1a1a;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .module-block {
+      margin: 10px 0;
+      padding: 8px 10px;
+      background: #fff;
+      border: 1px solid #083A67;
+      border-left: 3px solid #083A67;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .module-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .module-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: #083A67;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .module-duration {
+      font-size: 9px;
+      color: #4F82BA;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .module-topics {
+      margin-left: 8px;
+    }
+
+    .topic-item {
+      font-size: 9px;
+      color: #1a1a1a;
+      padding: 2px 0;
+      line-height: 1.3;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+
+    .module-exercises {
+      margin-top: 6px;
+      padding-left: 8px;
+    }
+
+    .exercise-item {
+      font-size: 8px;
+      color: #4F82BA;
+      padding: 2px 0;
+      font-family: "SimSun", "宋体", "STSong", sans-serif;
+    }
+  </style>
 </head>
+
 <body>
-<div class="content-wrapper">
-  <div class="doc-header">
-    <div class="header-left">
-      <div class="company-name">{{company.company_name}}</div>
-      <div class="company-tagline">{{company.company_slogan}}</div>
+  <div class="content-wrapper">
+    <div class="doc-header">
+      <div class="header-left">
+        <div class="company-name">{{company.company_name}}</div>
+        <div class="company-tagline">{{company.company_slogan}}</div>
+      </div>
+      <div class="header-right">
+        {% if branding.logo_path %}
+        <img src="{{ branding.logo_path }}" alt="Logo" class="logo-img">
+        {% endif %}
+      </div>
     </div>
-    <div class="header-right">
-      {% if branding.logo_path %}
-      <img src="{{ branding.logo_path }}" alt="Logo" class="logo-img">
+
+    <div class="doc-title">{{ quotation.title }}</div>
+
+    <div class="meta-section">
+      <table class="meta-table">
+        <tr>
+          <td class="label">致客户 / Submitted To:</td>
+          <td class="value"><strong>{{ customer.customer_name }}</strong></td>
+        </tr>
+        <tr>
+          <td class="label">日期 / Date:</td>
+          <td class="value">{{ quotation.quotation_date }}</td>
+        </tr>
+        {% if quotation.quotation_no %}
+        <tr>
+          <td class="label">报价单号 / Quote No:</td>
+          <td class="value">{{ quotation.quotation_no }}</td>
+        </tr>
+        {% endif %}
+      </table>
+    </div>
+
+    {% if doc_type != 'outline' and pricing_items %}
+    <div class="pricing-section">
+      <div class="section-title">报价明细 Pricing Details</div>
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>项目 / Item</th>
+            <th>时长 / Duration</th>
+            <th>数量 / Qty</th>
+            <th>单价 / Unit Price</th>
+            <th>小计 / Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in pricing_items %}
+          <tr>
+            <td>{{ item.service_name }}</td>
+            <td>{% if item.days %}{{ item.days }}{{ item.unit }}{% else %}-{% endif %}</td>
+            <td>{{ item.quantity or "-" }}</td>
+            <td>{% if item.unit_price %}{{ "%.2f"|format(item.unit_price) }}/{{ item.unit }}{% else %}-{% endif %}</td>
+            <td>{{ "%.2f"|format(item.subtotal) }}</td>
+          </tr>
+          {% endfor %}
+          {% if pricing_summary.total_amount > 0 %}
+          <tr class="total-row">
+            <td colspan="4">共计 / Total:</td>
+            <td>{{ quotation.currency }} {{ "%.0f"|format(pricing_summary.total_amount) }}</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+
+    <!-- Course Outline Section -->
+    {% if outline and outline.modules %}
+    <div class="outline-section">
+      <div class="section-title">课程大纲 Training Outline</div>
+
+      {% if outline.title %}
+      <div class="outline-main-title">{{ outline.title }}</div>
       {% endif %}
+
+      {% if outline.learning_objectives %}
+      <div class="objectives-section">
+        <div class="subsection-title">课程目标 Learning Objectives</div>
+        {% for obj in outline.learning_objectives %}
+        <div class="objective-item">{{ loop.index }}. {{ obj }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if outline.target_audience %}
+      <div class="audience-section">
+        <div class="subsection-title">培训对象 Target Audience</div>
+        <div class="audience-item">• {{ outline.target_audience|join(' / ') }}</div>
+      </div>
+      {% endif %}
+
+      {% for module in outline.modules %}
+      <div class="module-block">
+        <div class="module-header">
+          <span class="module-title">{{ module.module_title }}</span>
+          {% if module.duration %}
+          <span class="module-duration">{{ module.duration }}</span>
+          {% endif %}
+        </div>
+        <div class="module-topics">
+          {% for topic in module.topics %}
+          <div class="topic-item">{{ loop.index }}. {{ topic }}</div>
+          {% endfor %}
+        </div>
+        {% if module.exercises %}
+        <div class="module-exercises">
+          {% for exercise in module.exercises %}
+          <div class="exercise-item">✦ {{ exercise }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if notes and notes|length > 0 %}
+    <div class="notes-section">
+      <div class="section-title">备注 Remarks</div>
+      {% for note in notes %}
+      <div class="note-item">• {{ note }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+
+    {% if doc_type != 'outline' and signature.bank_name %}
+    <div class="bank-section">
+      <div class="section-title">银行账户信息 Bank Account</div>
+      <div class="bank-info">
+        <div><strong>开户行 / Bank:</strong> {{ signature.bank_name }}</div>
+        <div><strong>账号 / Account:</strong> {{ signature.account_number }}</div>
+        <div><strong>账户名称 / Name:</strong> {{ signature.account_name }}</div>
+      </div>
+    </div>
+    {% endif %}
+    
+    <div class="doc-footer">
+      <div class="footer-left">
+        <div>{{ company.company_name }}</div>
+        <div>{{ company.company_tel }}</div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-accent">Valid Through / 有效期至: {{ validity.valid_until or "90 days" }}</div>
+      </div>
     </div>
   </div>
-
-  <div class="doc-title">报价单 / Quotation</div>
-
-  <div class="meta-section">
-  <table class="meta-table">
-  <tr><td class="label">致客户 / Submitted To:</td><td class="value"><strong>{{ customer.customer_name }}</strong></td></tr>
-  <tr><td class="label">日期 / Date:</td><td class="value">{{ quotation.quotation_date }}</td></tr>
-  <tr><td class="label">报价单号 / Quote No:</td><td class="value">{{ quotation.quotation_no }}</td></tr>
-  </table>
-  </div>
-
-  <div class="pricing-section">
-  <div class="section-title">报价明细 Pricing Details</div>
-  <table class="pricing-table">
-  <thead>
-  <tr>
-  <th>项目 / Item</th>
-  <th>时长 / Duration</th>
-  <th>数量 / Qty</th>
-  <th>单价 / Unit Price</th>
-  <th>小计 / Total</th>
-  </tr>
-  </thead>
-  <tbody>
-  {% for item in pricing_items %}
-  <tr>
-  <td>{{ item.service_name }}</td>
-  <td>{% if item.days %}{{ item.days }}{{ item.unit }}{% else %}-{% endif %}</td>
-  <td>{{ item.quantity or "-" }}</td>
-  <td>{% if item.unit_price %}{{ "%.2f"|format(item.unit_price) }}/{{ item.unit }}{% else %}-{% endif %}</td>
-  <td>{{ "%.2f"|format(item.subtotal) }}</td>
-  </tr>
-  {% endfor %}
-  <tr class="total-row">
-  <td colspan="4">共计 / Total:</td>
-  <td>{{ quotation.currency }} {{ "%.0f"|format(pricing_summary.total_amount) }}</td>
-  </tr>
-  </tbody>
-  </table>
-  </div>
-
-  {% if notes and notes|length > 0 %}
-  <div class="notes-section">
-    <div class="section-title">备注 Remarks</div>
-    {% for note in notes %}
-    <div class="note-item">• {{ note }}</div>
-    {% endfor %}
-  </div>
-  {% endif %}
-
-  <div class="bank-section">
-    <div class="section-title">银行账户信息 Bank Account</div>
-    <div class="bank-info">
-      <div><strong>开户行 / Bank:</strong> {{ signature.bank_name }}</div>
-      <div><strong>账号 / Account:</strong> {{ signature.account_number }}</div>
-      <div><strong>账户名称 / Name:</strong> {{ signature.account_name }}</div>
-    </div>
-  </div>
-
-  <div class="doc-footer">
-    <div class="footer-left">
-      <div>{{ company.company_name }}</div>
-      <div>{{ company.company_tel }}</div>
-    </div>
-    <div class="footer-right">
-      <div class="footer-accent">Valid Through / 有效期至: {{ validity.valid_until or "90 days" }}</div>
-    </div>
-  </div>
-</div>
 
 </body>
+
 </html>
