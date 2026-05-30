@@ -28,9 +28,9 @@
       margin: 0 auto;
     }
 
-    /* Content wrapper with 20% margin on each side - applies to ALL content */
+    /* Content wrapper with 15% margin on each side - applies to ALL content */
     .content-wrapper {
-      margin: 0 20%;
+      margin: 0 15%;
     }
 
     /* Header section */
@@ -427,14 +427,14 @@
             <td>{{ item.service_name }}</td>
             <td>{% if item.days %}{{ item.days }}{{ item.unit }}{% else %}-{% endif %}</td>
             <td>{{ item.quantity or "-" }}</td>
-            <td>{% if item.unit_price %}{{ "%.2f"|format(item.unit_price) }}/{{ item.unit }}{% else %}-{% endif %}</td>
-            <td>{{ "%.2f"|format(item.subtotal) }}</td>
+            <td>{% if item.unit_price %}{{ "{:,.0f}"|format(item.unit_price) }}/{{ item.unit }}{% else %}-{% endif %}</td>
+            <td>{{ "{:,.0f}"|format(item.subtotal) }}</td>
           </tr>
           {% endfor %}
           {% if pricing_summary.total_amount > 0 %}
           <tr class="total-row">
             <td colspan="4">共计 / Total:</td>
-            <td>{{ quotation.currency }} {{ "%.0f"|format(pricing_summary.total_amount) }}</td>
+            <td>{{ quotation.currency }} {{ "{:,.0f}"|format(pricing_summary.total_amount) }}</td>
           </tr>
           {% endif %}
         </tbody>
