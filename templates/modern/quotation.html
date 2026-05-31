@@ -427,14 +427,14 @@
             <td>{{ item.service_name }}</td>
             <td>{% if item.days %}{{ item.days }}{{ item.unit }}{% else %}-{% endif %}</td>
             <td>{{ item.quantity or "-" }}</td>
-            <td>{% if item.unit_price %}{{ "{:,.0f}"|format(item.unit_price) }}/{{ item.unit }}{% else %}-{% endif %}</td>
-            <td>{{ "{:,.0f}"|format(item.subtotal) }}</td>
+            <td>{% if item.unit_price %}{{ "%.2f"|format(item.unit_price) }}/{{ item.unit }}{% else %}-{% endif %}</td>
+            <td>{{ "%.2f"|format(item.subtotal) }}</td>
           </tr>
           {% endfor %}
           {% if pricing_summary.total_amount > 0 %}
           <tr class="total-row">
             <td colspan="4">共计 / Total:</td>
-            <td>{{ quotation.currency }} {{ "{:,.0f}"|format(pricing_summary.total_amount) }}</td>
+            <td>{{ quotation.currency }} {{ "%.2f"|format(pricing_summary.total_amount) }}</td>
           </tr>
           {% endif %}
         </tbody>
@@ -442,6 +442,28 @@
     </div>
     {% endif %}
 
+
+    {% if notes and notes|length > 0 %}
+    <div class="notes-section">
+      <div class="section-title">备注 Remarks</div>
+      {% for note in notes %}
+      <div class="note-item">• {{ note }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+
+    {% if doc_type != 'outline' and signature.bank_name %}
+    <div class="bank-section">
+      <div class="section-title">银行账户信息 Bank Account</div>
+      <div class="bank-info">
+        <div><strong>开户行 / Bank:</strong> {{ signature.bank_name }}</div>
+        <div><strong>账号 / Account:</strong> {{ signature.account_number }}</div>
+        <div><strong>账户名称 / Name:</strong> {{ signature.account_name }}</div>
+      </div>
+    </div>
+    {% endif %}
+        
 
     <!-- Course Outline Section -->
     {% if outline and outline.modules %}
@@ -493,27 +515,6 @@
     </div>
     {% endif %}
 
-    {% if notes and notes|length > 0 %}
-    <div class="notes-section">
-      <div class="section-title">备注 Remarks</div>
-      {% for note in notes %}
-      <div class="note-item">• {{ note }}</div>
-      {% endfor %}
-    </div>
-    {% endif %}
-
-
-    {% if doc_type != 'outline' and signature.bank_name %}
-    <div class="bank-section">
-      <div class="section-title">银行账户信息 Bank Account</div>
-      <div class="bank-info">
-        <div><strong>开户行 / Bank:</strong> {{ signature.bank_name }}</div>
-        <div><strong>账号 / Account:</strong> {{ signature.account_number }}</div>
-        <div><strong>账户名称 / Name:</strong> {{ signature.account_name }}</div>
-      </div>
-    </div>
-    {% endif %}
-    
     <div class="doc-footer">
       <div class="footer-left">
         <div>{{ company.company_name }}</div>

@@ -66,7 +66,11 @@ def main():
     html = render_html(data, template_file)
 
     template_dir = Path(template_file).parent
-    html_output = template_dir / "quotation_output.html"
+    # Use pdf_output directory for HTML if pdf_output is specified, otherwise use template dir
+    if pdf_output:
+        html_output = Path(pdf_output).with_suffix(".html")
+    else:
+        html_output = template_dir.parent / "output/quotation_output.html"
     with open(html_output, "w") as f:
         f.write(html)
     print(f"HTML written to: {html_output}")
