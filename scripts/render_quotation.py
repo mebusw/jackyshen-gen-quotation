@@ -13,7 +13,13 @@ def get_base64_image(path):
         return None
     full_path = Path(path)
     if not full_path.exists():
-        return None
+        # Try skill directory if path is relative
+        if not full_path.is_absolute():
+            skill_dir = Path(__file__).parent.parent
+            full_path = skill_dir / path
+        if not full_path.exists():
+            print(f"[WARNING] Logo not found: {full_path}", file=sys.stderr)
+            return None
     with open(full_path, "rb") as f:
         data = f.read()
     ext = full_path.suffix.lower()

@@ -53,10 +53,7 @@ Logo 位置：**页面右上角**。
 
 按顺序收集以下字段，如有缺失请询问用户。
 
-
-### `quotation`类型的必需信息
-
-```markdown
+### 任何类型都要有的必需信息
 
 1. **我司信息**
    - 公司名称 company_name ("优普丰AI敏捷创新管理咨询")
@@ -64,46 +61,45 @@ Logo 位置：**页面右上角**。
    - 电话 company_tel ("+86-21-6380-9913")
    - 邮箱 company_email (可选)
    - 口号 company_slogan ("Shanghai UPerform Limited.")
-   - 品牌 logo_path ("logo.png")
+   - 品牌 logo_path（默认填 `logo.png`，脚本会自动在 skill 目录下查找）
 
 2. **客户信息**
    - 客户名称 customer_name
    - 联系人 contact_person (可选)
 
 3. **文档信息**
-   - 报价单号 quotation_no (格式: QL-YYYYMMDD-序号)
-   - 报价日期 quotation_date (YYYY/M/D)
    - 文档标题 doc_title
    - doc_type: "quotation"（必须显式声明）
+   - 日期 quotation_date (YYYY/M/D)
 
-4. **报价项目** (至少1项)
+
+### `quotation`类型特有的必需信息
+
+1. **文档信息**
+   - 报价单号 quotation_no (格式: QL-YYYYMMDD-序号)
+2. **报价项目** (至少1项)
    - 服务名称 service_name
    - 单价 unit_price (CNY)
    - 数量 quantity
    - 单位 unit (天/人/次/项)
    - 分类 category: training | travel | interview | consulting | material | other
-
-5. **汇总信息**
+3. **汇总信息**
    - 小计 subtotal
    - 税率 tax_rate (如: 6%)
    - 税费 tax_amount
    - 总计 total_amount
    - 币种 currency (默认 CNY)
    - 含税否 tax_included (可选)
-
-6. **付款条款**
+4. **付款条款**
    - 付款方式 payment_method (可选)
    - 付款阶段 payment_schedule (可选)
-
-7. **有效期**
+5. **有效期**
    - 有效至 valid_until (默认为当前日期之后的第90天)
-
-8. **签章信息**
+6. **签章信息**
    - 账户名称 account_name "上海优普丰企业管理有限公司"
    - 开户行 bank_name "上海银行愚园路支行"
    - 银行账号 account_number "3164 1803 0002 50561"
-
-9. **备注**
+7. **备注**
    - Please keep the discounted price confidentially to any third party. 
    - 此优惠价请对第三方高度保密。
    - 常规培训时间: 9:00am-5:00pm, 1.5小时午餐休息。
@@ -111,35 +107,19 @@ Logo 位置：**页面右上角**。
    - 该报价单覆盖了教材费等费用。
    - Quotation covers course materials etc.  
 
-```
-
-
 
 ### `outline`类型的必需信息
-```markdown
-1. **我司信息**
-   - 公司名称 company_name ("优普丰AI敏捷创新管理咨询")
-   - 地址 company_address (可选)
-   - 电话 company_tel (可选)
-   - 邮箱 company_email (可选)
 
-2. **客户信息**
-   - 客户名称 customer_name
-
-3. **文档信息**
-   - 文档标题 doc_title
-   - doc_type: "outline"（必须显式声明）
-
-4. **课程大纲** (CourseOutline)
+1. **课程大纲** (CourseOutline)
    — 课程标题 title
    - modules[]
    - learning_objectives[] 
    - target_audience[]
-```
+
 ### 可选字段 
 
 - 备注 notes[]
-- 品牌配置 branding{logo_path, primary_color, secondary_color, accent_color}
+- 品牌配置 branding{logo_path: 填 `logo.png` 即可，脚本会自动在 skill 目录下查找, primary_color, secondary_color, accent_color}
 
 ## 步骤三 — 按 QuoteDocument Schema 组织数据
 
@@ -152,7 +132,7 @@ QuoteDocument:
   quotation: QuotationInfo     # 文档基本信息
   doc_type: str               # "quotation" | "outline" | "mixed" — 控制模板条件渲染
   pricing_items: list[PricingItem]  # 报价明细（doc_type != "outline" 时显示）
-  pricing_summary: PricingSummary  # 汇总
+  pricing_summary: PricingSummary  # subtotal, tax_rate, tax_amount, total_amount, currency, tax_included
   payment_terms: PaymentTerms  # 付款条款
   tax: TaxInfo                # 税费
   validity: ValidityInfo      # 有效期
@@ -190,6 +170,71 @@ CourseModule:
   duration: str | None  # 如 "2小时"
   topics: list[str]
   exercises: list[str] = []
+```
+
+### CompanyInfo
+
+```python
+CompanyInfo:
+  name: str           # 公司名称
+  address: str        # 地址
+  tel: str            # 电话
+  email: str | None   # 邮箱（可选）
+  slogan: str | None  # 口号（可选）
+```
+
+### CustomerInfo
+
+```python
+CustomerInfo:
+  name: str                 # 客户名称
+  contact_person: str | None  # 联系人（可选）
+```
+
+### PricingSummary
+
+```python
+PricingSummary:
+  subtotal: float     # 小计
+  tax_rate: float     # 税率（默认 0）
+  tax_amount: float   # 税费（默认 0）
+  total_amount: float # 总计（必填，模板依赖此字段）
+  currency: str       # 币种（默认 "CNY"）
+  tax_included: bool  # 含税否（默认 false）
+```
+
+### PaymentTerms
+
+```python
+PaymentTerms:
+  payment_method: str | None   # 付款方式（如"银行转账"）
+  payment_schedule: str | None # 付款阶段（如"课程结束后结算"）
+```
+
+### ValidityInfo
+
+```python
+ValidityInfo:
+  valid_until: str  # 有效期，格式 YYYY/M/D（默认当前日期+90天）
+```
+
+### SignatureInfo
+
+```python
+SignatureInfo:
+  account_name: str  # 账户名称
+  bank_name: str     # 开户行
+  account_number: str # 银行账号
+```
+
+### BrandingConfig
+
+```python
+BrandingConfig:
+  logo_path: str  # 填 "logo.png"，脚本自动在 skill 目录下查找
+  primary_color: str   # 主色（默认 #083A67）
+  secondary_color: str # 辅色（默认 #4F82BA）
+  accent_color: str    # 点缀色（默认 #FFFFFF）
 ```
 
 ## 步骤四 — Jinja2 渲染为 HTML → PDF
@@ -312,7 +357,7 @@ doc_type: "outline"
 1. **LLM 输出 JSON，不输出 HTML** — 样式全部由模板控制
 2. **Schema 是数据源** — 所有输入必须映射到 QuoteDocument
 3. **doc_type 控制条件渲染** — 必须显式声明 `"quotation"` | `"outline"` | `"mixed"`，模板据此显示/隐藏对应区块
-4. **品牌一致性** — Logo 右上角、深蓝页眉、蓝色点缀。确保logo图片可访问到。
+4. **品牌一致性** — Logo 右上角、深蓝页眉、蓝色点缀。`logo_path` 填 `logo.png` 即可，脚本会自动在 skill 目录下查找。
 5. **中英双语** — 单文档支持中文和英文
 6. **PDF 是最终输出** — 使用 Playwright 将 HTML 转为 PDF
 7. **禁止直接注入 CSS** — 所有样式来自模板

@@ -387,13 +387,13 @@
       </div>
     </div>
 
-    <div class="doc-title">{{ quotation.title }}</div>
+    <div class="doc-title">{{ quotation.doc_title }}</div>
 
     <div class="meta-section">
       <table class="meta-table">
         <tr>
           <td class="label">致客户 / Submitted To:</td>
-          <td class="value"><strong>{{ customer.customer_name }}</strong></td>
+          <td class="value"><strong>{{ customer.name }}</strong></td>
         </tr>
         <tr>
           <td class="label">日期 / Date:</td>
@@ -453,7 +453,7 @@
     {% endif %}
 
 
-    {% if doc_type != 'outline' and signature.bank_name %}
+    {% if doc_type != 'outline' and signature and signature.bank_name %}
     <div class="bank-section">
       <div class="section-title">银行账户信息 Bank Account</div>
       <div class="bank-info">
